@@ -1,0 +1,84 @@
+pip install sqlalchemy mysql-connector-python pymysql
+┌──────────────────────────┐
+│         Users            │
+├──────────────────────────┤
+│ id (PK)                  │
+│ email                    │
+│ password                 │
+│ role (patient/medecin/   │
+│       secretaire/labo)   │
+│ created_at               │
+└───────────┬──────────────┘
+            │ 1..1
+            │
+            ▼
+┌──────────────────────────┐
+│        Patients          │
+├──────────────────────────┤
+│ id (PK)                  │
+│ user_id (FK → Users)     │
+│ nom                      │
+│ prenom                   │
+│ date_naissance           │
+│ adresse                  │
+│ telephone                │
+│ created_at               │
+└──────────────────────────┘
+
+┌──────────────────────────┐
+│        Medecins          │
+├──────────────────────────┤
+│ id (PK)                  │
+│ user_id (FK → Users)     │
+│ nom                      │
+│ specialite               │
+│ telephone                │
+│ created_at               │
+└──────────────────────────┘
+
+┌──────────────────────────┐
+│      Secretaires         │
+├──────────────────────────┤
+│ id (PK)                  │
+│ user_id (FK → Users)     │
+│ nom                      │
+│ bureau                   │
+│ created_at               │
+└──────────────────────────┘
+
+┌──────────────────────────┐
+│      Laboratoires        │
+├──────────────────────────┤
+│ id (PK)                  │
+│ nom                      │
+│ adresse                  │
+│ telephone                │
+│ created_at               │
+└──────────────────────────┘
+
+┌──────────────────────────┐
+│        RendezVous        │
+├──────────────────────────┤
+│ id (PK)                  │
+│ patient_id (FK)          │
+│ medecin_id (FK)          │
+│ date_rdv                 │
+│ heure_rdv                │
+│ motif                    │
+│ created_at               │
+└──────────────────────────┘
+
+┌──────────────────────────┐
+│        Documents         │
+├──────────────────────────┤
+│ id (PK)                  │
+│ patient_id (FK)          │
+│ laboratoire_id (FK)      │
+│ type_document            │
+│ url_fichier              │
+│ created_at               │
+└──────────────────────────┘
+
+Tu as déjà un CRUD Patients fonctionnel, mais pour permettre aux patients de prendre, consulter et annuler leurs rendez‑vous, il te manque encore la partie “rendez‑vous” : c’est‑à‑dire la création du modèle RendezVous (avec patient_id, medecin_id, date, heure, motif), la mise en place des relations simples entre Patients et Médecins, puis les routes dédiées comme POST pour prendre un rendez‑vous, GET pour afficher les rendez‑vous d’un patient, et DELETE pour annuler. En résumé : la gestion des patients est prête, et la prochaine étape logique est d’ajouter la mécanique des rendez‑vous pour que ton API devienne réellement utile et cohérente.
+
+
