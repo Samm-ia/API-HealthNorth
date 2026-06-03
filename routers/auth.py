@@ -31,26 +31,6 @@ def login(data: Login, session: Session = Depends(get_session)):
             "role": user.role
         }
     }
-@router.post("/login")
-def login(data: Login, session: Session = Depends(get_session)):
-    query = select(Patient).where(Patient.email == data.email)
-    Patient = session.exec(query).first()
-
-    if not Patient:
-        raise HTTPException(401, "Identifiants invalides")
-
-    if Patient.password != data.password:
-        raise HTTPException(401, "Identifiants invalides")
-
-    return {
-        "status": "success",
-        "user": {
-            "id": Patient.id,
-            "nom": Patient.nom,
-            "prenom": Patient.prenom,
-            "role": Patient.role
-        }
-    }
 
 
 @router.post("/register")
