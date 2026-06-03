@@ -28,9 +28,9 @@ def create_patient(patient: Patient, session: Session = Depends(get_session)):
     return patient
 
 
-@router.delete("/patients/{patient_id}")
-def delete_patient(patient_id: int, session: Session = Depends(get_session)):
-    patient = session.get(Patient, patient_id)
+@router.delete("/patients/{id_patient}")
+def delete_patient(id_patient: int, session: Session = Depends(get_session)):
+    patient = session.get(Patient, id_patient)
     if not patient:
         raise HTTPException(status_code=404, detail="Patient not found")
 
@@ -39,9 +39,9 @@ def delete_patient(patient_id: int, session: Session = Depends(get_session)):
     return {"message": "Patient deleted"}
 
 
-@router.put("/patients/{patient_id}")
-def update_patient(patient_id: int, updated_data: Patient, session: Session = Depends(get_session)):
-    patient = session.get(Patient, patient_id)
+@router.put("/patients/{id_patient}")
+def update_patient(id_patient: int, updated_data: Patient, session: Session = Depends(get_session)):
+    patient = session.get(Patient, id_patient)
     if not patient:
         raise HTTPException(status_code=404, detail="Patient not found")
 

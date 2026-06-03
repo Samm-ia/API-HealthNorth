@@ -1,6 +1,18 @@
 from sqlmodel import SQLModel, Field
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, date
+
+class User(SQLModel, table=True):
+    __tablename__ = "users"
+    
+    id: Optional[int] = Field(default=None, primary_key=True)
+    nom: str
+    prenom: str
+    email: str = Field(unique=True, index=True)
+    password: str
+    role: Optional[str] = None
+    created_at: Optional[datetime] = None
+
 
 class Patient(SQLModel, table=True):
     __tablename__ = "Patients"
@@ -9,16 +21,16 @@ class Patient(SQLModel, table=True):
     id_patient: Optional[int] = Field(default=None, primary_key=True)
     nom: str
     prenom: str
-    num_secu: Optional[str] = None  # 👈 ajouté
-    email: str = Field(unique=True, index=True)
-    mdp: str  # 👈 mot de passe (attention : en clair, mais pour l'examen ça passe)
-    # ⚠️ On enlève telephone qui n'existe pas !
+    num_secu: Optional[str] = None  
+    email: Optional[str] = None
+    mdp: Optional[str] = None
+    id_user: Optional[int] = None  
 
 class Medecin(SQLModel, table=True):
     __tablename__ = "Medecins"
     __table_args__ = {"extend_existing": True}
     
-    # À adapter selon la structure réelle de ta table Medecins
+   
     id_medecin: Optional[int] = Field(default=None, primary_key=True)
     nom: str
     prenom: str
@@ -28,10 +40,19 @@ class Rendezvous(SQLModel, table=True):
     __tablename__ = "RendezVous"
     __table_args__ = {"extend_existing": True}
     
-    # À adapter selon ta table RendezVous
     id_rdv: Optional[int] = Field(default=None, primary_key=True)
-    patient_id: int = Field(foreign_key="Patients.id_patient")
-    medecin_id: int = Field(foreign_key="Medecins.id_medecin")
-    date_rdv: datetime
-    motif: str
-    statut: Optional[str] = "prévu"
+    id_patient: Optional[int] = Field(default=None, foreign_key="Patients.id_patient")
+    id_medecin: Optional[int] = Field(default=None, foreign_key="Medecins.id_medecin")
+    date_rdv: Optional[date] = None
+    heure: Optional[str] = None
+    statut: Optional[str] = "En attente"
+
+class Ordonnance(SQLModel, table=True):
+    __tablename__ = "ordonnances"
+    __table_args__ = {"extend_existing": True}
+    
+    id_ordonnance: Optional[int] = Field(default=None, primary_key=True)
+    id_patient: int = Field(foreign_key="Patients.id_patient")
+    id_medecin: int = Field(foreign_key="Medecins.id_medecin")
+    contenu: Optional[str] = None
+    date_ordonnance: Optional[date] = None

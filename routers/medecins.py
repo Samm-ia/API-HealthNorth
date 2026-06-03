@@ -1,22 +1,18 @@
 from fastapi import APIRouter, HTTPException
-from sqlmodel import SQLModel, Field, Session, select
+from sqlmodel import Session, select
 from database import engine
+from models import Medecin
 
 router = APIRouter()
 
-class Medecin(SQLModel, table=True):
-    id: int = Field(primary_key=True)
-    nom: str
-    specialite: str
 
-# GET all medecins
 @router.get("/medecins")
 def get_all_medecins():
     with Session(engine) as session:
         medecins = session.exec(select(Medecin)).all()
         return medecins
 
-# GET one medecin
+
 @router.get("/medecins/{medecin_id}")
 def get_medecin(medecin_id: int):
     with Session(engine) as session:
@@ -25,7 +21,7 @@ def get_medecin(medecin_id: int):
             raise HTTPException(status_code=404, detail="Médecin introuvable")
         return medecin
 
-# CREATE medecin
+
 @router.post("/medecins")
 def create_medecin(medecin: Medecin):
     with Session(engine) as session:
