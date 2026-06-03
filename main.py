@@ -33,10 +33,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.on_event("startup")
-def on_startup():
-    create_db_and_tables()
-    logging.info("Base de données initialisée.") 
+#@app.on_event("startup")
+#def on_startup():
+#    create_db_and_tables()
+#    logging.info("Base de données initialisée.") 
 
 app.include_router(patients.router)
 app.include_router(medecins.router)
